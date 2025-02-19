@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Trade Calculator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        input { padding: 8px; margin: 5px; width: 200px; }
+        button { padding: 10px; margin-top: 10px; cursor: pointer; }
+        .result { margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Stock Trade Calculator</h2>
+    
+    <label>Capital:</label>
+    <input type="number" id="capital" placeholder="Enter total capital"><br>
+
+    <label>Risk %:</label>
+    <input type="number" id="risk" placeholder="Enter risk percentage"><br>
+
+    <label>Entry Price:</label>
+    <input type="number" id="entryPrice" placeholder="Enter buy price"><br>
+
+    <button onclick="calculateTrade()">Calculate</button>
+
+    <div class="result" id="output"></div>
+
+    <script>
+        function calculateTrade() {
+            let capital = parseFloat(document.getElementById("capital").value);
+            let risk = parseFloat(document.getElementById("risk").value);
+            let entryPrice = parseFloat(document.getElementById("entryPrice").value);
+            
+            if (isNaN(capital) || isNaN(risk) || isNaN(entryPrice) || capital <= 0 || risk <= 0 || entryPrice <= 0) {
+                alert("Please enter valid values!");
+                return;
+            }
+
+            let riskAmount = (capital * risk) / 100;
+            let stopLoss = entryPrice - (entryPrice * risk / 100);
+            let targetPrice = entryPrice + (entryPrice * (risk * 2) / 100);
+            let quantity = Math.floor(riskAmount / (entryPrice - stopLoss));
+            let investment = entryPrice * quantity;
+
+            document.getElementById("output").innerHTML = `
+                Stop Loss: ₹${stopLoss.toFixed(2)}<br>
+                Target Price: ₹${targetPrice.toFixed(2)}<br>
+                Quantity to Buy: ${quantity}<br>
+                Investment Amount: ₹${investment.toFixed(2)}
+            `;
+        }
+    </script>
+</body>
+</html>
